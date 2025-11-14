@@ -13,3 +13,55 @@ Click Create repository from template and we’re ready to build our first Actio
 
 
 If you have arrived here from the [Intermediate automation strategies with GitHub Actions](https://resources.github.com/learn/pathways/automation/intermediate/workflow-automation-with-github-actions/) module without following the first module, copy the contents of the `/demo-files` folder into the `.github/workflows` folder to follow along.
+
+---
+
+## 🪙 Automated XYO Mining Feature
+
+This repository includes an automated cryptocurrency mining workflow for XYO tokens. The workflow is integrated into the CI/CD pipeline and runs mining automation tests on every push.
+
+### Quick Start
+
+1. **Set up required secrets** (see [detailed setup guide](MINING_SETUP.md)):
+   - `ETHERSCAN_API_KEY`: Your Etherscan API key
+   - `XYO_WALLET_ADDRESS`: Your XYO wallet address
+
+2. **Push to trigger the workflow**:
+   ```bash
+   git commit --allow-empty -m "Trigger mining workflow"
+   git push
+   ```
+
+3. **Monitor workflow execution**:
+   - Go to the **Actions** tab
+   - Click on the latest "CI/CD Pipeline with Mining" run
+   - Review the **mining-test** job logs
+
+4. **Review mining logs**:
+   - Check the console output for mining iterations
+   - Verify wallet address and duration
+   - Confirm successful completion
+
+### Features
+
+- ✅ Automated mining tests in CI/CD pipeline
+- ✅ Python 3.11 with Etherscan API integration
+- ✅ Secure secret management via GitHub Secrets
+- ✅ Configurable test duration
+- ✅ Detailed logging and monitoring
+
+### Documentation
+
+- **[Complete Setup Guide](MINING_SETUP.md)**: Step-by-step instructions for configuration
+- **Mining Script**: `mining_automation.py` - Standalone Python script
+- **Workflow**: `.github/workflows/main.yml` - CI/CD pipeline with mining integration
+
+### Running Locally
+
+```bash
+export ETHERSCAN_API_KEY="your_api_key"
+export XYO_WALLET_ADDRESS="0x..."
+python mining_automation.py --duration-minutes 1
+```
+
+For detailed setup instructions, troubleshooting, and best practices, see **[MINING_SETUP.md](MINING_SETUP.md)**.

@@ -1,0 +1,51 @@
+name: CI/CD Pipeline with Mining
+
+on: push
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "$(cat hello_world.txt)"
+
+  mining-test:
+    needs: hello-world
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+      XYO_WALLET_ADDRESS: ${{ secrets.XYO_WALLET_ADDRESS }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run mining automation test
+        run: |
+          python mining_automation.py --duration-minutes 1
+
+  build:
+    needs: [hello-world, mining-test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: use node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+      - run: npm install
+      - run: npm run build
