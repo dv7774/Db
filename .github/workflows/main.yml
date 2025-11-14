@@ -5,6 +5,8 @@ on: push
 jobs:
   hello-world:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Check out repository code
@@ -14,6 +16,8 @@ jobs:
   mining-test:
     needs: hello-world
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
       XYO_WALLET_ADDRESS: ${{ secrets.XYO_WALLET_ADDRESS }}
@@ -33,6 +37,8 @@ jobs:
   build:
     needs: [hello-world, mining-test]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: checkout repo
