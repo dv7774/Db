@@ -39,6 +39,13 @@ COINGECKO_URL = (
         "XYO_WALLET_ADDRESS",
     ]
 
+    def check_environment_variables():
+    """Check if required environment variables are set."""
+    required_vars = [
+        "ETHERSCAN_API_KEY",
+        "XYO_WALLET_ADDRESS"
+    ]
+
     missing_vars = [var for var in required_vars if not os.environ.get(var)]
 
     if missing_vars:
@@ -61,13 +68,6 @@ COINGECKO_URL = (
         print("       export XYO_WALLET_ADDRESS='your-wallet-here'")
         print()
         sys.exit(1)
-        print("=" * 60)
-        print("❌ ERROR: Missing Required Environment Variables")
-        print("=" * 60)
-        print("")
-        print("The following environment variables are not set:")
-        for var in missing_vars:
-            print(f"  • {var}")
         print("")
         print("Setup Instructions:")
         print("  1. For GitHub Actions:")
