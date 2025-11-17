@@ -45,7 +45,7 @@ on:
   workflow_dispatch:
   schedule:
     # Run once per day at 00:00 UTC
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * *"https 
 
 jobs:
   mining-portfolio:
@@ -58,7 +58,7 @@ jobs:
       XYO_WALLET_ADDRESS: ${{ secrets.XYO_WALLET_ADDRESS }}
       LIQUIDATION_TARGET_USD: "15000"
 
-    steps:
+steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
@@ -72,8 +72,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-    - name: Upload portfolio report
+      - name: Run mining automation
+        run: python3 mining_automation.py --duration-minutes 1
+
+      - name: Upload portfolio report
         uses: actions/upload-artifact@v4
         with:
           name: portfolio-reports
           path: reports/*.csv
+    
