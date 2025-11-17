@@ -7,12 +7,12 @@ on:
     # Run once per day at 00:00 UTC
     - cron: "0 0 * * *"
 
+
 jobs:
   mining-portfolio:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
     env:
       ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
       XYO_WALLET_ADDRESS: ${{ secrets.XYO_WALLET_ADDRESS }}
