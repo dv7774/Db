@@ -79,3 +79,4 @@ jobs:
         run: python3 mining_automation.py --duration-minutes 1
 
 
+
