@@ -1,21 +1,42 @@
-Here's the clean file. The only changes from your original:
+name: CI/CD Pipeline with Mining
 
-- Removed `MH9FSIES2XD34NCMTIRMXA16Z1FFX5QK9V` hardcoded before `${{ secrets.ETHERSCAN_API_KEY }}`
-- Removed the duplicate malformed block that had the wallet address similarly mangled
-- Fixed the YAML syntax error on line 33 that was causing all 38 workflow runs to fail
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
 
----
+jobs:
+  mining-portfolio:
+    runs-on: ubuntu-latest
 
-## How to deploy this
+    permissions:
+      contents: read
 
-1. Go to `github.com/dv7774/Db`
-2. Navigate to `.github/workflows/main.yml`
-3. Click the pencil ✏️ edit icon
-4. Select all and paste the contents of this file
-5. Commit directly to `main`
+    env:
+      ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+      XYO_WALLET_ADDRESS: ${{ secrets.XYO_WALLET_ADDRESS }}
+      LIQUIDATION_TARGET_USD: "15000"
 
-Then verify your secrets are set at `Db → Settings → Secrets and variables → Actions`:
-- `ETHERSCAN_API_KEY` → your new regenerated key from Etherscan
-- `XYO_WALLET_ADDRESS` → your XYO wallet address
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
 
-Once committed, the next workflow run should go green for the first time.
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run mining automation
+        run: python3 mining_automation.py --duration-minutes 1
+
+      - name: Upload portfolio report
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-reports
+          path: reports/*.csv
